@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
 public class PostsService {
     private final PostsRepository postsRepository;
 
+    //등록
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
         return postsRepository.save(requestDto.toEntity()).getId();
     }
 
+    //수정
     @Transactional
     public Long update(Long id, PostsUpdateRequestDto requestDto) {
         Posts posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
@@ -32,6 +34,7 @@ public class PostsService {
         return id;
     }
 
+    //삭제
     @Transactional
     public void delete (Long id) {
         Posts posts = postsRepository.findById(id)
@@ -47,6 +50,7 @@ public class PostsService {
         return new PostsResponseDto(entity);
     }
 
+    //조회속도 개선
     @Transactional(readOnly = true)
     public List<PostsListResponseDto> findAllDesc() {
         return postsRepository.findAllDesc().stream()
